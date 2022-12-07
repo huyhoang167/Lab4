@@ -1,0 +1,298 @@
+/*
+ * fsm_manual.c
+ *
+ *  Created on: Oct 27, 2022
+ *      Author: Hoang
+ */
+#include "fsm_manual.h"
+#include "fsm_automatic.h"
+#include "button.h"
+#include "global.h"
+// Cac bien luu gia trị dieu chinh cua 3 loai den
+int duration_for_red = 1;
+int duration_for_yellow = 1;
+int duration_for_green = 1;
+int count1 = 0;
+int  index_led1 = 0;
+int led_buffer1[4];
+// luu cac gia tri thoi gian và mode vào buffer
+void updateBuffer1(int time, int mode){
+	  int a = time%10;
+	  time = time/10;
+	  led_buffer1[0]= time;
+	  led_buffer1[1] = a;
+	  int b = mode%10;
+	  mode = mode/10;
+	  led_buffer1[2]= mode;
+	  led_buffer1[3] = b;
+}
+//Ham de hien thi so len LED 7 doan
+void Display7SEG1(int count){
+	switch (count) {
+		case 0:
+			HAL_GPIO_WritePin(SEG1_a_GPIO_Port, SEG1_a_Pin, 0);
+			HAL_GPIO_WritePin(SEG1_b_GPIO_Port, SEG1_b_Pin, 0);
+			HAL_GPIO_WritePin(SEG1_c_GPIO_Port, SEG1_c_Pin, 0);
+			HAL_GPIO_WritePin(SEG1_d_GPIO_Port, SEG1_d_Pin, 0);
+			HAL_GPIO_WritePin(SEG1_e_GPIO_Port, SEG1_e_Pin, 0);
+			HAL_GPIO_WritePin(SEG1_f_GPIO_Port, SEG1_f_Pin, 0);
+			HAL_GPIO_WritePin(SEG1_g_GPIO_Port, SEG1_g_Pin, 1);
+			break;
+		case 1:
+				HAL_GPIO_WritePin(SEG1_a_GPIO_Port, SEG1_a_Pin, 1);
+				HAL_GPIO_WritePin(SEG1_b_GPIO_Port, SEG1_b_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_c_GPIO_Port, SEG1_c_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_d_GPIO_Port, SEG1_d_Pin, 1);
+				HAL_GPIO_WritePin(SEG1_e_GPIO_Port, SEG1_e_Pin, 1);
+				HAL_GPIO_WritePin(SEG1_f_GPIO_Port, SEG1_f_Pin, 1);
+				HAL_GPIO_WritePin(SEG1_g_GPIO_Port, SEG1_g_Pin, 1);
+				break;
+		case 2:
+				HAL_GPIO_WritePin(SEG1_a_GPIO_Port, SEG1_a_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_b_GPIO_Port, SEG1_b_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_c_GPIO_Port, SEG1_c_Pin, 1);
+				HAL_GPIO_WritePin(SEG1_d_GPIO_Port, SEG1_d_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_e_GPIO_Port, SEG1_e_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_f_GPIO_Port, SEG1_f_Pin, 1);
+				HAL_GPIO_WritePin(SEG1_g_GPIO_Port, SEG1_g_Pin, 0);
+				break;
+		case 3:
+				HAL_GPIO_WritePin(SEG1_a_GPIO_Port, SEG1_a_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_b_GPIO_Port, SEG1_b_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_c_GPIO_Port, SEG1_c_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_d_GPIO_Port, SEG1_d_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_e_GPIO_Port, SEG1_e_Pin, 1);
+				HAL_GPIO_WritePin(SEG1_f_GPIO_Port, SEG1_f_Pin, 1);
+				HAL_GPIO_WritePin(SEG1_g_GPIO_Port, SEG1_g_Pin, 0);
+				break;
+		case 4:
+				HAL_GPIO_WritePin(SEG1_a_GPIO_Port, SEG1_a_Pin, 1);
+				HAL_GPIO_WritePin(SEG1_b_GPIO_Port, SEG1_b_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_c_GPIO_Port, SEG1_c_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_d_GPIO_Port, SEG1_d_Pin, 1);
+				HAL_GPIO_WritePin(SEG1_e_GPIO_Port, SEG1_e_Pin, 1);
+				HAL_GPIO_WritePin(SEG1_f_GPIO_Port, SEG1_f_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_g_GPIO_Port, SEG1_g_Pin, 0);
+				break;
+		case 5:
+				HAL_GPIO_WritePin(SEG1_a_GPIO_Port, SEG1_a_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_b_GPIO_Port, SEG1_b_Pin, 1);
+				HAL_GPIO_WritePin(SEG1_c_GPIO_Port, SEG1_c_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_d_GPIO_Port, SEG1_d_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_e_GPIO_Port, SEG1_e_Pin, 1);
+				HAL_GPIO_WritePin(SEG1_f_GPIO_Port, SEG1_f_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_g_GPIO_Port, SEG1_g_Pin, 0);
+				break;
+		case 6:
+				HAL_GPIO_WritePin(SEG1_a_GPIO_Port, SEG1_a_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_b_GPIO_Port, SEG1_b_Pin, 1);
+				HAL_GPIO_WritePin(SEG1_c_GPIO_Port, SEG1_c_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_d_GPIO_Port, SEG1_d_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_e_GPIO_Port, SEG1_e_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_f_GPIO_Port, SEG1_f_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_g_GPIO_Port, SEG1_g_Pin, 0);
+				break;
+		case 7:
+				HAL_GPIO_WritePin(SEG1_a_GPIO_Port, SEG1_a_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_b_GPIO_Port, SEG1_b_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_c_GPIO_Port, SEG1_c_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_d_GPIO_Port, SEG1_d_Pin, 1);
+				HAL_GPIO_WritePin(SEG1_e_GPIO_Port, SEG1_e_Pin, 1);
+				HAL_GPIO_WritePin(SEG1_f_GPIO_Port, SEG1_f_Pin, 1);
+				HAL_GPIO_WritePin(SEG1_g_GPIO_Port, SEG1_g_Pin, 1);
+				break;
+		case 8:
+				HAL_GPIO_WritePin(SEG1_a_GPIO_Port, SEG1_a_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_b_GPIO_Port, SEG1_b_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_c_GPIO_Port, SEG1_c_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_d_GPIO_Port, SEG1_d_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_e_GPIO_Port, SEG1_e_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_f_GPIO_Port, SEG1_f_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_g_GPIO_Port, SEG1_g_Pin, 0);
+				break;
+		case 9:
+				HAL_GPIO_WritePin(SEG1_a_GPIO_Port, SEG1_a_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_b_GPIO_Port, SEG1_b_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_c_GPIO_Port, SEG1_c_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_d_GPIO_Port, SEG1_d_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_e_GPIO_Port, SEG1_e_Pin, 1);
+				HAL_GPIO_WritePin(SEG1_f_GPIO_Port, SEG1_f_Pin, 0);
+				HAL_GPIO_WritePin(SEG1_g_GPIO_Port, SEG1_g_Pin, 0);
+				break;
+		default:
+			break;
+	}
+}
+// Hien thi gia tri thoi gian va mode len LED 7 doan tu buffer
+void update7SEG1 (int index) {
+   switch (index) {
+     case 0:
+       // Display the first 7 SEG with led_buffer [0]
+  	  HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin,0);
+  	  HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin,1);
+	  HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin,1);
+	  HAL_GPIO_WritePin(EN4_GPIO_Port, EN4_Pin,1);
+       Display7SEG1(led_buffer1[index]);
+       break ;
+     case 1:
+       // Display the second 7 SEG with led_buffer [1]
+       HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin,1);
+       HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin,0);
+       HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin,1);
+       HAL_GPIO_WritePin(EN4_GPIO_Port, EN4_Pin,1);
+       Display7SEG1(led_buffer1[index]);
+       break ;
+     case 2:
+       // Display the third 7 SEG with led_buffer [2]
+    	 HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin,1);
+    	 HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin,1);
+    	 HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin,0);
+    	 HAL_GPIO_WritePin(EN4_GPIO_Port, EN4_Pin,1);
+       Display7SEG1(led_buffer1[index]);
+       break ;
+     case 3:
+       // Display the forth 7 SEG with led_buffer [3]
+    	 HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin,1);
+    	  	 HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin,1);
+    		 HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin,1);
+    		 HAL_GPIO_WritePin(EN4_GPIO_Port, EN4_Pin,0);
+       index_led1 = 0;
+       Display7SEG1(led_buffer1[index]);
+       break ;
+     default :
+       break ;
+   }
+}
+// May trang thai hien thuc cac MODE
+void fsm_manual_run(){
+	switch (status) {
+		case INIT: // Trang thai khoi dau
+			status = NORMAL_MODE;
+		    break;
+		case NORMAL_MODE: // trang thai normal
+		    	HAL_GPIO_WritePin(LED_RED_LR_GPIO_Port,LED_RED_LR_Pin, 0);
+		    	HAL_GPIO_WritePin(LED_YELLOW_LR_GPIO_Port, LED_YELLOW_LR_Pin,0);
+		    	HAL_GPIO_WritePin(LED_GREEN_LR_GPIO_Port, LED_GREEN_LR_Pin,0);
+		    	HAL_GPIO_WritePin(LED_RED_UD_GPIO_Port,LED_RED_UD_Pin, 0);
+		    	HAL_GPIO_WritePin(LED_YELLOW_UD_GPIO_Port, LED_YELLOW_UD_Pin,0);
+		    	HAL_GPIO_WritePin(LED_GREEN_UD_GPIO_Port, LED_GREEN_UD_Pin,0);
+		    	status = AUTO_RED; // Chuyen sang che do den giao thong
+		    	setTimer1(duration_red_LR_modify*1000); // Set timer
+		    	duration_red_LR = duration_red_LR_modify; // Lay cac gia tri chu ki sang cua cac loai den
+		    	duration_green_UD = duration_green_LR_modify;
+		    	duration_yellow_UD = duration_yellow_LR_modify;
+		        break;
+			break;
+		case RED_MODE: // Trang thai dieu chinh den do
+			updateBuffer1(duration_for_red, 1);
+			if (timer2_flag == 1){
+						setTimer2(250); // Set timer 0.25s
+						// Chop tat den
+						HAL_GPIO_WritePin(LED_YELLOW_LR_GPIO_Port, LED_YELLOW_LR_Pin,0);
+						HAL_GPIO_WritePin(LED_GREEN_LR_GPIO_Port, LED_GREEN_LR_Pin,0);
+						HAL_GPIO_WritePin(LED_YELLOW_UD_GPIO_Port, LED_YELLOW_UD_Pin,0);
+						HAL_GPIO_WritePin(LED_GREEN_UD_GPIO_Port, LED_GREEN_UD_Pin,0);
+						HAL_GPIO_TogglePin(LED_RED_LR_GPIO_Port, LED_RED_LR_Pin);
+						HAL_GPIO_TogglePin(LED_RED_UD_GPIO_Port, LED_RED_UD_Pin);
+						update7SEG1(index_led1++);
+			}
+			if (isButtonPressed2() == 1){ // Nut nhan thu 2 duoc nhan tha
+				if (duration_for_red>= 99){
+						duration_for_red = 99; // Khi gia tri chu ki lon hon 99
+				}
+				else{
+						duration_for_red++; // Tang gia tri chu ki den do len 1 don vi
+				}
+			}
+			if(isButtonHold2() == 1){  // Nut nhan thu 2 duoc nhan giu
+				if (duration_for_red>= 99){
+					duration_for_red = 99;
+				}
+				else{
+				duration_for_red++;
+				}
+			}
+			if(isButtonPressed3() == 1){ // Nut nhan thu 3 duoc nhan
+				duration_red_LR_modify = duration_for_red; // Luu gia tri thoi gian da dieu chinh
+			}
+			if(isButtonPressed1() == 1){ // Nut nhan thu 1 duoc nhan
+				status = YELLOW_MODE; // Chuyen mode
+			}
+		    break;
+		case YELLOW_MODE: // Trang thai dieu chinh den vang
+			updateBuffer1(duration_for_yellow, 2);
+					if (timer2_flag == 1){
+						setTimer2(250);
+						HAL_GPIO_WritePin(LED_RED_LR_GPIO_Port,LED_RED_LR_Pin, 0);
+						HAL_GPIO_WritePin(LED_GREEN_LR_GPIO_Port, LED_GREEN_LR_Pin,0);
+						HAL_GPIO_WritePin(LED_RED_UD_GPIO_Port,LED_RED_UD_Pin, 0);
+						HAL_GPIO_WritePin(LED_GREEN_UD_GPIO_Port, LED_GREEN_UD_Pin,0);
+						HAL_GPIO_TogglePin(LED_YELLOW_LR_GPIO_Port, LED_YELLOW_LR_Pin);
+						HAL_GPIO_TogglePin(LED_YELLOW_UD_GPIO_Port, LED_YELLOW_UD_Pin);
+						update7SEG1(index_led1++);
+				}
+					if (isButtonPressed2() == 1){
+						if (duration_for_yellow >= 99){
+						duration_for_yellow = 99;
+						}
+						else duration_for_yellow++;
+			}
+			if(isButtonHold2() == 1){
+				if (duration_for_yellow>= 99){
+					duration_for_yellow = 99;
+				}
+				else{
+					duration_for_yellow++;
+				}
+			}
+			if(isButtonPressed3() == 1){
+				duration_yellow_LR_modify = duration_for_yellow;
+			}
+			if(isButtonPressed1() == 1){
+				status = GREEN_MODE;
+			}
+			break;
+		case GREEN_MODE: // Trang thai dieu chinh den xanh
+			updateBuffer1(duration_for_green, 3);
+			if (timer2_flag == 1){
+						count1++;
+						setTimer2(250);
+						HAL_GPIO_WritePin(LED_RED_LR_GPIO_Port,LED_RED_LR_Pin, 0);
+						HAL_GPIO_WritePin(LED_YELLOW_LR_GPIO_Port, LED_YELLOW_LR_Pin,0);
+						HAL_GPIO_WritePin(LED_RED_UD_GPIO_Port,LED_RED_UD_Pin, 0);
+						HAL_GPIO_WritePin(LED_YELLOW_UD_GPIO_Port, LED_YELLOW_UD_Pin,0);
+						HAL_GPIO_TogglePin(LED_GREEN_LR_GPIO_Port, LED_GREEN_LR_Pin);
+						HAL_GPIO_TogglePin(LED_GREEN_UD_GPIO_Port, LED_GREEN_UD_Pin);
+						update7SEG1(index_led1++);
+				}
+			if (isButtonPressed2() == 1){
+						if (duration_for_green >= 99){
+							duration_for_green = 99;
+						}
+						duration_for_green++;
+			}
+			if(isButtonHold2() == 1){
+				if (duration_for_green>= 99){
+					duration_for_green = 99;
+				}
+				else{
+					duration_for_green++;
+				}
+			}
+			if(isButtonPressed3() == 1){
+				duration_green_LR_modify = duration_for_green;
+			}
+			if(isButtonPressed1() == 1){
+				status = NORMAL_MODE;
+			}
+			break;
+		case PES_MODE:
+
+			break;
+		default:
+			break;
+}
+}
+
+
+

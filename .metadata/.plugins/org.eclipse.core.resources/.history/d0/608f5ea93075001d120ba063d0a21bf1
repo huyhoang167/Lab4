@@ -1,0 +1,22 @@
+/*
+ * global.c
+ *
+ *  Created on: Oct 27, 2022
+ *      Author: Hoang
+ */
+
+#include "global.h"
+int status = 0; // Luu gia tri status
+// Luu gia tri thoi gian chu ki cac den khi duoc dieu chinh
+int duration_red_LR_modify = 9;
+int duration_green_LR_modify = 6;
+int duration_yellow_LR_modify = 3;
+// Luu thoi gian chu ki cua cac den nam ben trai va phai
+int duration_red_LR;
+int duration_yellow_LR;
+int duration_green_LR;
+// Luu thoi gian chu ki cua cac den nam phia tren va duoi
+int duration_green_UD;
+int duration_yellow_UD;
+int duration_red_UD;
+int current_status;

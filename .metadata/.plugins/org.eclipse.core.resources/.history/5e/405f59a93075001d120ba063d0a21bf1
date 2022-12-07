@@ -1,0 +1,31 @@
+/*
+ * global.h
+ *
+ *  Created on: Oct 27, 2022
+ *      Author: Hoang
+ */
+
+
+#ifndef INC_GLOBAL_H_
+#define INC_GLOBAL_H_
+
+#define INIT  0
+#define AUTO_RED 1
+#define AUTO_YELLOW 2
+#define AUTO_GREEN 3
+#define NORMAL_MODE 12
+#define RED_MODE 13
+#define YELLOW_MODE 14
+#define GREEN_MODE 15
+extern int status;
+extern int duration_red_LR_modify;
+extern int duration_green_LR_modify;
+extern int duration_yellow_LR_modify;
+extern int duration_red_LR;
+extern int duration_red_UD;
+extern int duration_green_LR;
+extern int duration_green_UD;
+extern int duration_yellow_LR;
+extern int duration_yellow_UD;
+extern int current_status;
+#endif /* INC_GLOBAL_H_ */
